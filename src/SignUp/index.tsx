@@ -1,6 +1,7 @@
 import React, {SyntheticEvent, useState} from "react";
 import {Form, Button, Card, Alert} from "react-bootstrap";
 import {useAuth} from '../contexts/AuthContext'
+import {Link, useHistory} from "react-router-dom";
 
 export function SignUp() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ export function SignUp() {
   const { signup } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
@@ -20,12 +22,20 @@ export function SignUp() {
       setError('');
       setLoading(true);
       if (signup) {
-        await signup(email, password)
+        await signup(email, password);
+        setLoading(false);
+        history.push('/');
       }
-    } catch {
-      setError("Failed to create an account")
+    } catch(error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      if (errorCode === 'auth/weak-password') {
+        setError('The password is too weak.')
+      } else {
+        setError(errorMessage);
+      }
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   return(
@@ -52,7 +62,7 @@ export function SignUp() {
           </Card.Body>
         </Card>
         <div className="w-100 text-center mt-2">
-          Already have an account? Log In
+          Already have an account? <Link to='sign-in'>Log In</Link>
         </div>
       </div>
   )
