@@ -27,16 +27,10 @@ function App() {
                                 <Route exact path='/'>
                                     {user ? <div><ChatRoom/> <SignOut/></div>: <Redirect to='/sign-in' />}
                                 </Route>
-                                <Route exact path='/sign-in'>
-                                    <div className="w-100" style={{maxWidth: "400px"}}>
-                                        <SignIn />
-                                    </div>
-                                </Route>
-                                <Route exact path='/sign-up'>
-                                    <div className="w-100" style={{maxWidth: "400px"}}>
-                                        <SignUp />
-                                    </div>
-                                </Route>
+                                <div className="w-100" style={{maxWidth: "400px"}}>
+                                    <Route exact path="/sign-in" component={SignIn} />
+                                    <Route exact path="/sign-up" component={SignUp} />
+                                </div>
                             </Switch>
                         </Router>
                     </Container>
