@@ -9,37 +9,41 @@ import {ChatRoom} from './chatRoom'
 import {useAuthState} from 'react-firebase-hooks/auth'
 import {Container} from 'react-bootstrap'
 import {SignUp} from "./SignUp";
+import {Provider} from "react-redux";
+import {store} from "./store";
 
 function App() {
   const [user] = useAuthState(auth);
   console.log("USER: ", user)
 
   return (
-    <div className="App">
-        <AuthProvider>
-            <section>
-                <Container className="d-flex align-items-center justify-content-center" style={{minHeight: "100vh"}}>
-                    <Router>
-                        <Switch>
-                            <Route exact path='/'>
-                                {user ? <div><ChatRoom/> <SignOut/></div>: <Redirect to='/sign-in' />}
-                            </Route>
-                            <Route exact path='/sign-in'>
-                                <div className="w-100" style={{maxWidth: "400px"}}>
-                                    <SignIn />
-                                </div>
-                            </Route>
-                            <Route exact path='/sign-up'>
-                                <div className="w-100" style={{maxWidth: "400px"}}>
-                                    <SignUp />
-                                </div>
-                            </Route>
-                        </Switch>
-                    </Router>
-                </Container>
-            </section>
-        </AuthProvider>
-    </div>
+    <Provider store={store}>
+        <div className="App">
+            <AuthProvider>
+                <section>
+                    <Container className="d-flex align-items-center justify-content-center" style={{minHeight: "100vh"}}>
+                        <Router>
+                            <Switch>
+                                <Route exact path='/'>
+                                    {user ? <div><ChatRoom/> <SignOut/></div>: <Redirect to='/sign-in' />}
+                                </Route>
+                                <Route exact path='/sign-in'>
+                                    <div className="w-100" style={{maxWidth: "400px"}}>
+                                        <SignIn />
+                                    </div>
+                                </Route>
+                                <Route exact path='/sign-up'>
+                                    <div className="w-100" style={{maxWidth: "400px"}}>
+                                        <SignUp />
+                                    </div>
+                                </Route>
+                            </Switch>
+                        </Router>
+                    </Container>
+                </section>
+            </AuthProvider>
+        </div>
+    </Provider>
   );
 }
 
