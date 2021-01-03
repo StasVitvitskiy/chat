@@ -1,8 +1,9 @@
 import React, {ChangeEvent, PureComponent, SyntheticEvent} from "react";
 import {auth} from '../firebase'
 import firebase from "firebase/app";
-import Button from "react-bootstrap/Button";
-import {Alert, Card, Form} from "react-bootstrap";
+import {Box, Button, CardContent} from "@material-ui/core";
+import {Card, TextField} from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import {Link} from 'react-router-dom'
 import {connect} from "react-redux";
 import {setSignInField, signIn, SignInState, WithSignInState} from "./signInReducer";
@@ -37,29 +38,43 @@ export const SignIn = connect(
   render() {
     const {email, password, error, loading} = this.props
     return (
-        <div>
-          <Button variant='outline-primary' onClick={this.signInWithGoogle}>Sign In With Google</Button>
+        <Box width='30%'>
+          <Box margin='20px 0'>
+              <Button variant='contained' color='primary' onClick={this.signInWithGoogle}>Sign In With Google</Button>
+          </Box>
           <Card>
-            <Card.Body>
-              <h2 className="text-center mb-4">Sign In</h2>
-              {error && <Alert variant='danger'>{error}</Alert>}
-              <Form onSubmit={this.handleSubmit}>
-                <Form.Group id="email">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" value={email} onChange={this.updateField("email")} required />
-                </Form.Group>
-                <Form.Group id="password">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" value={password} onChange={this.updateField("password")} required/>
-                </Form.Group>
-                <Button disabled={loading} className="w-100" type='submit'>Sign In</Button>
-              </Form>
-            </Card.Body>
+            <CardContent>
+              <h2>Sign In</h2>
+              {error && <Alert severity='error'>{error}</Alert>}
+              <Box component="form" display="grid" gridRowGap="10px" width='100%' onSubmit={this.handleSubmit}>
+                  <TextField
+                      fullWidth
+                      id='email'
+                      variant='outlined'
+                      label="email"
+                      value={email}
+                      onChange={this.updateField("email")}
+                      required
+                  />
+                  <TextField
+                      fullWidth
+                      id="password"
+                      variant='outlined'
+                      label="password"
+                      value={password}
+                      onChange={this.updateField("password")}
+                      required
+                  />
+                <Box width='120px' display='grid' justifySelf='center'>
+                    <Button variant="contained" disabled={loading} color="primary" type='submit'>Sign In</Button>
+                </Box>
+              </Box>
+            </CardContent>
           </Card>
-          <div className="w-100 text-center mt-2">
+          <Box marginTop='10px'>
             Don't have an account? <Link to='/sign-up'>Sign Up</Link>
-          </div>
-        </div>
+          </Box>
+        </Box>
     )
   }
 })

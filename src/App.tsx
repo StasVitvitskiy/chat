@@ -5,11 +5,12 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom
 import {SignIn} from './SignIn'
 import {SignOut} from "./SignOut";
 import {ChatRoom} from './chatRoom'
-import {Container} from 'react-bootstrap'
+import {Box, Container} from '@material-ui/core'
 import {SignUp} from "./SignUp";
 import {Provider} from "react-redux";
 import {store} from "./store";
 import {AuthenticatedUser, NonAuthenticatedUser} from "./User";
+import {Header} from "./header";
 
 function App() {
   return (
@@ -17,18 +18,18 @@ function App() {
         <div className="App">
             <AuthProvider>
                 <section>
-                    <Container className="d-flex align-items-center justify-content-center" style={{minHeight: "100vh"}}>
                         <Router>
                             <AuthenticatedUser>
                                 <Switch>
                                     <Route exact path='/'>
+                                        <Header />
                                         <ChatRoom/>
                                         <SignOut/>
                                     </Route>
                                 </Switch>
                             </AuthenticatedUser>
                             <NonAuthenticatedUser>
-                                <div className="w-100" style={{maxWidth: "400px"}}>
+                                <Box display='flex' justifyContent='center' alignItems='center'>
                                     <Switch>
                                         <Route exact path="/sign-in" component={SignIn} />
                                         <Route exact path="/sign-up" component={SignUp} />
@@ -36,10 +37,9 @@ function App() {
                                             <Redirect to='/sign-in' />
                                         </Route>
                                     </Switch>
-                                </div>
+                                </Box>
                             </NonAuthenticatedUser>
                         </Router>
-                    </Container>
                 </section>
             </AuthProvider>
         </div>

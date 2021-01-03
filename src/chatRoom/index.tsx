@@ -3,7 +3,7 @@ import {auth, firestore} from "../firebase";
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
 import {ChatMessage} from "../messages";
-import Button from "react-bootstrap/Button";
+import {Button} from "@material-ui/core";
 import airplane from "../media/airplane.png";
 
 export function ChatRoom() {
@@ -44,7 +44,7 @@ export function ChatRoom() {
             <div ref={dummy as RefObject<HTMLDivElement>}/>
             <form onSubmit={sendMessage} action="">
                 <input value={formValue} onChange={(event => setFormValue(event.target.value))}/>
-                <Button type='submit'>
+                <Button color='primary' type='submit'>
                     <img width='16px' src={airplane} alt=""/>
                 </Button>
             </form>

@@ -1,5 +1,7 @@
 import React, {ChangeEvent, SyntheticEvent, useCallback} from "react";
-import {Form, Button, Card, Alert} from "react-bootstrap";
+import {Box, Button, CardContent} from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
+import {Card, TextField} from "@material-ui/core";
 import {Link, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {signUpStateSelector} from "./signUpSelectors";
@@ -32,31 +34,45 @@ export function SignUp() {
   }
 
   return(
-      <div>
+      <Box width='30%'>
         <Card>
-          <Card.Body>
+          <CardContent>
             <h2 className="text-center mb-4">Sign Up</h2>
-            {error && <Alert variant='danger'>{error}</Alert>}
-            <Form onSubmit={handleSubmit}>
-              <Form.Group id="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" value={email} onChange={updateField("email")} required />
-              </Form.Group>
-              <Form.Group id="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" value={password} onChange={updateField("password")} required/>
-              </Form.Group>
-              <Form.Group id="password-confirm">
-                <Form.Label>Password Confirmation</Form.Label>
-                <Form.Control type="password" value={confirmPassword} onChange={updateField("confirmPassword")} required/>
-              </Form.Group>
-              <Button disabled={loading} className="w-100" type='submit'>Sign Up</Button>
-            </Form>
-          </Card.Body>
+            {error && <Alert severity='error'>{error}</Alert>}
+            <Box component='form' display='grid' gridRowGap='10px' onSubmit={handleSubmit}>
+                <TextField
+                    id="email"
+                    value={email}
+                    variant='outlined'
+                    label='Email'
+                    onChange={updateField("email")}
+                    required
+                />
+                <TextField
+                    id="password"
+                    variant="outlined"
+                    label="Password"
+                    value={password}
+                    onChange={updateField("password")}
+                    required
+                />
+                <TextField
+                    id="passwordConfirm"
+                    variant="outlined"
+                    label="Password Confirmation"
+                    value={confirmPassword}
+                    onChange={updateField("confirmPassword")}
+                    required
+                />
+                <Box width='120px' display='grid' justifySelf='center'>
+                    <Button variant='contained' disabled={loading} color="primary" type='submit'>Sign Up</Button>
+                </Box>
+            </Box>
+          </CardContent>
         </Card>
-        <div className="w-100 text-center mt-2">
+        <Box marginTop='10px'>
           Already have an account? <Link to='sign-in'>Log In</Link>
-        </div>
-      </div>
+        </Box>
+      </Box>
   )
 }
