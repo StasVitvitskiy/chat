@@ -5,6 +5,16 @@ import firebase from "firebase/app";
 import {ChatMessage} from "../messages";
 import {Button} from "@material-ui/core";
 import airplane from "../media/airplane.png";
+import {
+    Layout,
+    LeftPanel,
+    LeftPanelBottom,
+    LeftPanelTop,
+    RightPanel,
+    RightPanelBottom,
+    RightPanelMain,
+    RightPanelTop
+} from "../layout";
 
 export function ChatRoom() {
     const dummy = useRef<HTMLDivElement>()
@@ -39,15 +49,28 @@ export function ChatRoom() {
         }
     }
     return (
-        <main>
-            {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-            <div ref={dummy as RefObject<HTMLDivElement>}/>
-            <form onSubmit={sendMessage} action="">
-                <input value={formValue} onChange={(event => setFormValue(event.target.value))}/>
-                <Button color='primary' type='submit'>
-                    <img width='16px' src={airplane} alt=""/>
-                </Button>
-            </form>
-        </main>
+        <>
+            <main style={{display:"none"}}>
+                {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+                <div ref={dummy as RefObject<HTMLDivElement>}/>
+                <form onSubmit={sendMessage} action="">
+                    <input value={formValue} onChange={(event => setFormValue(event.target.value))}/>
+                    <Button color='primary' type='submit'>
+                        <img width='16px' src={airplane} alt=""/>
+                    </Button>
+                </form>
+            </main>
+            <Layout>
+                <LeftPanel>
+                    <LeftPanelTop/>
+                    <LeftPanelBottom/>
+                </LeftPanel>
+                <RightPanel>
+                    <RightPanelTop/>
+                    <RightPanelMain/>
+                    <RightPanelBottom/>
+                </RightPanel>
+            </Layout>
+        </>
     )
 }

@@ -5,12 +5,11 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom
 import {SignIn} from './SignIn'
 import {SignOut} from "./SignOut";
 import {ChatRoom} from './chatRoom'
-import {Box, Container} from '@material-ui/core'
+import {Box} from '@material-ui/core'
 import {SignUp} from "./SignUp";
 import {Provider} from "react-redux";
 import {store} from "./store";
 import {AuthenticatedUser, NonAuthenticatedUser} from "./User";
-import {Header} from "./header";
 
 function App() {
   return (
@@ -22,9 +21,7 @@ function App() {
                             <AuthenticatedUser>
                                 <Switch>
                                     <Route exact path='/'>
-                                        <Header />
                                         <ChatRoom/>
-                                        <SignOut/>
                                     </Route>
                                 </Switch>
                             </AuthenticatedUser>

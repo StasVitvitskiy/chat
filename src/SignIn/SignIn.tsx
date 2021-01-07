@@ -61,6 +61,7 @@ export const SignIn = connect(
                       id="password"
                       variant='outlined'
                       label="password"
+                      type='password'
                       value={password}
                       onChange={this.updateField("password")}
                       required

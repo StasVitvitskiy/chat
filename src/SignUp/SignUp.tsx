@@ -52,6 +52,7 @@ export function SignUp() {
                     id="password"
                     variant="outlined"
                     label="Password"
+                    type='password'
                     value={password}
                     onChange={updateField("password")}
                     required
@@ -59,6 +60,7 @@ export function SignUp() {
                 <TextField
                     id="passwordConfirm"
                     variant="outlined"
+                    type='password'
                     label="Password Confirmation"
                     value={confirmPassword}
                     onChange={updateField("confirmPassword")}
