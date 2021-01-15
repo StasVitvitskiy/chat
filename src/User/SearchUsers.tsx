@@ -2,15 +2,23 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {Box} from "@material-ui/core";
+import {userStateSelector} from "./userSelectors";
+import {useSelector} from "react-redux";
 
 export default function SearchUsers() {
+    const { userInfo } = useSelector(userStateSelector);
+    const options: {text: string, value: string}[] = [];
+    for( let key in userInfo) {
+        options.push({text: `${userInfo[key].name} ${userInfo[key].lastName}`, value: key})
+    }
     return (
         <Box>
             <Autocomplete
+                getOptionLabel={option => option.text}
                 freeSolo
                 id="free-solo-2-demo"
                 disableClearable
-                options={users.map((option) => option.name + " " + option.lastName)}
+                options={options}
                 renderInput={(params) => (
                     <TextField
                         {...params}
@@ -24,17 +32,3 @@ export default function SearchUsers() {
         </Box>
     );
 }
-
-// will be in redux
-const users = [
-    { name: 'John', lastName: "Johnson" },
-    { name: 'Tyrone', lastName: "Spong" },
-    { name: 'Jane', lastName: "Doe" },
-    { name: 'Timothy', lastName: "Keller" },
-    { name: 'Mike', lastName: "Taylor" },
-    { name: 'Taylor', lastName: "Meyer" },
-    { name: 'Courtney', lastName: "Plunk" },
-    { name: 'Steve', lastName: "Fox" },
-    { name: 'James', lastName: "Richardson" },
-    { name: 'Vicki', lastName: "Dwira" },
-];

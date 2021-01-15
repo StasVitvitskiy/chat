@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {userStateSelector} from "./userSelectors";
 import {auth} from "../firebase";
-import {setCurrentUser} from "./userReducer";
+import {getUsers, setCurrentUser} from "./userReducer";
 
 export const AuthenticatedUser = ({children}: { children: JSX.Element }): JSX.Element | null => {
     const dispatch = useDispatch()
@@ -11,6 +11,9 @@ export const AuthenticatedUser = ({children}: { children: JSX.Element }): JSX.El
             dispatch(
                 setCurrentUser(user)
             );
+            dispatch(
+                getUsers()
+            )
         })
     }, [dispatch])
 

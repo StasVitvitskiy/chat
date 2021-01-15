@@ -16,7 +16,7 @@ import {
     RightPanelTop
 } from "../layout";
 import {SignOut} from "../SignOut";
-import SearchUsers from "../searchUsers/SearchUsers";
+import SearchUsers from "../User/SearchUsers";
 
 export function ChatRoom() {
     const dummy = useRef<HTMLDivElement>()
