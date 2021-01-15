@@ -21,7 +21,6 @@ export function ChatMessage(
   const day = date.getDay() < 10 ? '0' + date.getDay() : date.getDay();
   const hr = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
   const min = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-  console.log(text, date, `${month}/${day} at ${hr}:${min}`)
   const messageClass = uid === (auth.currentUser || {}).uid ? 'sent' : 'received';
   return(
       <div className={`message ${messageClass}`}>

@@ -4,6 +4,6 @@ import {Button} from "@material-ui/core";
 
 export function SignOut() {
     return auth.currentUser && (
-        <Button color="primary" onClick={() => auth.signOut()}>Sign Out</Button>
+        <Button color="primary" variant='outlined' onClick={() => auth.signOut()}>Sign Out</Button>
     )
 }

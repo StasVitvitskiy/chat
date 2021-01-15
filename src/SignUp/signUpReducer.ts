@@ -44,7 +44,7 @@ export const signUp = (
         dispatch(setSignUpField("loading", true))
         await auth.createUserWithEmailAndPassword(email,password)
         dispatch(setSignUpField("loading", false))
-        history.push('/');
+        history.push('/personal-info');
     } catch(error) {
         const errorCode = error.code;
         const errorMessage = error.message;

@@ -3,13 +3,13 @@ import './App.css';
 import {AuthProvider} from "./authContext";
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
 import {SignIn} from './SignIn'
-import {SignOut} from "./SignOut";
 import {ChatRoom} from './chatRoom'
 import {Box} from '@material-ui/core'
 import {SignUp} from "./SignUp";
 import {Provider} from "react-redux";
 import {store} from "./store";
 import {AuthenticatedUser, NonAuthenticatedUser} from "./User";
+import {PersonalInfo} from "./personalInfo";
 
 function App() {
   return (
@@ -22,6 +22,9 @@ function App() {
                                 <Switch>
                                     <Route exact path='/'>
                                         <ChatRoom/>
+                                    </Route>
+                                    <Route exact path='/personal-info'>
+                                        <PersonalInfo />
                                     </Route>
                                 </Switch>
                             </AuthenticatedUser>

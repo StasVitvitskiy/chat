@@ -21,7 +21,7 @@ const styles = {
     },
     leftPanelTop: {
         gridArea: "upperPartLeft",
-        backgroundColor: "red"
+        //backgroundColor: "red"
     },
     leftPanelBottom: {
         gridArea: "lowerPartLeft",

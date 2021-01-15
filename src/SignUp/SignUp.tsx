@@ -20,18 +20,21 @@ export function SignUp() {
   )
   const history = useHistory();
 
-  async function handleSubmit(e: SyntheticEvent) {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+      (e: SyntheticEvent) => {
+          e.preventDefault();
 
-    dispatch(
-        signUp(
-            email,
-            password,
-            confirmPassword,
-            history
-        )
-    )
-  }
+          dispatch(
+              signUp(
+                  email,
+                  password,
+                  confirmPassword,
+                  history
+              )
+          )
+      },
+      [confirmPassword, dispatch, email, history, password]
+  )
 
   return(
       <Box width='30%'>

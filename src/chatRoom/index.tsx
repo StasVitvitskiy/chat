@@ -15,6 +15,8 @@ import {
     RightPanelMain,
     RightPanelTop
 } from "../layout";
+import {SignOut} from "../SignOut";
+import SearchUsers from "../searchUsers/SearchUsers";
 
 export function ChatRoom() {
     const dummy = useRef<HTMLDivElement>()
@@ -62,8 +64,12 @@ export function ChatRoom() {
             </main>
             <Layout>
                 <LeftPanel>
-                    <LeftPanelTop/>
-                    <LeftPanelBottom/>
+                    <LeftPanelTop>
+                        <SearchUsers />
+                    </LeftPanelTop>
+                    <LeftPanelBottom>
+                        <SignOut />
+                    </LeftPanelBottom>
                 </LeftPanel>
                 <RightPanel>
                     <RightPanelTop/>
