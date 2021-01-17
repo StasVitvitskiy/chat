@@ -1,7 +1,7 @@
 import {History} from "history";
-import {Dispatch} from "redux";
 import {auth, firestore} from "../firebase";
 import firebase from "firebase";
+import {getUsers} from "../User";
 
 
 export type PersonalInfoState = {
@@ -35,7 +35,7 @@ export const clearPersonalInfo = () => {
 }
 
 export const sendPersonalInfo = (formNameValue: string, formLastNameValue: string, history: History) =>
-    async (dispatch: Dispatch) => {
+    async (dispatch: Function) => {
         const personalInfoRef = firestore.collection('personalInfo');
         const { currentUser } = auth
         if (currentUser) {
@@ -51,6 +51,9 @@ export const sendPersonalInfo = (formNameValue: string, formLastNameValue: strin
                 })
             }
             dispatch(clearPersonalInfo())
+            dispatch(
+                getUsers()
+            )
             history.push('/');
         }
     }
