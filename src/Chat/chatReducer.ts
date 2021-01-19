@@ -2,6 +2,7 @@ import {UserInfo, WithUserState} from "../User";
 import {Dispatch} from "redux";
 import {firestore} from "../firebase";
 import {userStateSelector} from "../User/userSelectors";
+import {History} from 'history'
 
 export type Message = {
     id: string,
@@ -34,7 +35,34 @@ export const setChatData = (data: ChatState) => ({
     payload: data
 })
 
-export const openChat = (userId: string) => async (dispatch: Dispatch, getState: () => unknown) => {
+export const openChatById = (chatId: string) => async (dispatch: Dispatch, getState: () => unknown) => {
+    const {userInfo} = userStateSelector( getState() as WithUserState)
+    const chatRef = firestore.collection('chat');
+    const messageRef = firestore.collection("messages");
+    const messagesSnapshot = await messageRef.where("chatId", "==", chatId).get()
+    const docRef = chatRef.doc(chatId);
+    const chatSnapshot = await docRef.get()
+    if(chatSnapshot.exists) {
+        const chatObject =  chatSnapshot.data() as {user1: string, user2: string}
+        dispatch(
+            setChatData(
+                {
+                    id: chatId,
+                    user1: userInfo[chatObject.user1],
+                    user2: userInfo[chatObject.user2],
+                    messages: messagesSnapshot.docs.map((el) => {
+                        return {
+                            id: el.id,
+                            ...el.data()
+                        } as Message
+                    })
+                }
+            )
+        )
+    }
+}
+
+export const openChat = (userId: string, history: History) => async (dispatch: Dispatch, getState: () => unknown) => {
     const { currentUser, userInfo } = userStateSelector(getState() as WithUserState)
     const chatRef = firestore.collection('chat');
     const messageRef = firestore.collection("messages");
@@ -57,6 +85,7 @@ export const openChat = (userId: string) => async (dispatch: Dispatch, getState:
                     messages: []
                 }
             ))
+            history.push(`/chat/${chatRef.id}`)
         } else {
             const {user1, user2, id} = chats[0];
             const messagesSnapshot = await messageRef.where("chatId", "==", id).get()
@@ -73,6 +102,7 @@ export const openChat = (userId: string) => async (dispatch: Dispatch, getState:
                     })
                 }
             ))
+            history.push(`/chat/${id}`)
         }
     }
 }

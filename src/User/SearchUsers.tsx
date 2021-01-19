@@ -5,11 +5,13 @@ import {Box} from "@material-ui/core";
 import {userStateSelector} from "./userSelectors";
 import {useDispatch, useSelector} from "react-redux";
 import {openChat} from '../Chat'
+import {useHistory} from "react-router-dom";
 
 
 export function SearchUsers() {
     const { userInfo } = useSelector(userStateSelector);
     const options: {text: string, value: string}[] = [];
+    const history = useHistory()
     for( let key in userInfo) {
         options.push({text: `${userInfo[key].name} ${userInfo[key].lastName}`, value: key})
     }
@@ -17,8 +19,8 @@ export function SearchUsers() {
     const onUserSelected = useCallback((
         event, newValue
     ) => {
-        dispatch(openChat(newValue.value))
-    }, [dispatch])
+        dispatch(openChat(newValue.value,history))
+    }, [dispatch, history])
     return (
         <Box>
             <Autocomplete

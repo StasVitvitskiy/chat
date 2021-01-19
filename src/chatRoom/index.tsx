@@ -1,22 +1,33 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {
-    Layout,
+    Layout, LayoutHeaderLeft, LayoutHeaderRight,
     LeftPanel,
     LeftPanelBottom,
     LeftPanelTop,
     RightPanel,
     RightPanelBottom,
     RightPanelMain,
-    RightPanelTop
 } from "../layout";
 import {SignOut} from "../SignOut";
 import {SearchUsers} from "../User";
-import {ChatMessages} from "../Chat";
+import {ChatMessages, openChatById} from "../Chat";
+import { useParams } from 'react-router-dom';
+import {useDispatch} from "react-redux";
 
 export function ChatRoom() {
+    const dispatch = useDispatch()
+    // eslint-disable-next-line
+    const { chatId } = useParams() as { chatId?: string }
+    useEffect(() => {
+        if(chatId) {
+            dispatch(openChatById(chatId))
+        }
+    },[chatId, dispatch])
     return (
         <main>
             <Layout>
+                <LayoutHeaderLeft />
+                <LayoutHeaderRight />
                 <LeftPanel>
                     <LeftPanelTop>
                         <SearchUsers />
@@ -26,7 +37,6 @@ export function ChatRoom() {
                     </LeftPanelBottom>
                 </LeftPanel>
                 <RightPanel>
-                    <RightPanelTop/>
                     <RightPanelMain>
                         <ChatMessages />
                     </RightPanelMain>

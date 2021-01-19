@@ -23,6 +23,9 @@ function App() {
                                     <Route exact path='/'>
                                         <ChatRoom/>
                                     </Route>
+                                    <Route exact path='/chat/:chatId'>
+                                        <ChatRoom/>
+                                    </Route>
                                     <Route exact path='/personal-info'>
                                         <PersonalInfo />
                                     </Route>

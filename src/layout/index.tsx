@@ -5,10 +5,12 @@ const styles = {
     root: {
         display:'grid',
         gridTemplateAreas: `
+            "headerLeft headerRight"
             "leftPanel rightPanel"
         `,
         height: "100vh",
         gridTemplateColumns: "1fr 4fr",
+        gridTemplateRows: "50px 1fr"
     },
     leftPanel: {
         gridArea: "leftPanel",
@@ -18,6 +20,14 @@ const styles = {
             "lowerPartLeft"
         `,
         gridTemplateRows: "80px 1fr"
+    },
+    headerLeft: {
+        gridArea: "headerLeft",
+        backgroundColor: "blue"
+    },
+    headerRight: {
+        gridArea: "headerRight",
+        backgroundColor: "cyan"
     },
     leftPanelTop: {
         gridArea: "upperPartLeft",
@@ -30,15 +40,10 @@ const styles = {
         gridArea: "rightPanel",
         display: "grid",
         gridTemplateAreas: `
-            "upperPartRight"
             "mainPartRight"
             "bottomPartRight"
         `,
-        gridTemplateRows: "80px 1fr 80px"
-    },
-    rightPanelTop: {
-        gridArea: "upperPartRight",
-        backgroundColor: "blue"
+        gridTemplateRows: "1fr 80px"
     },
     rightMainPanel: {
         gridArea: "mainPartRight",
@@ -117,13 +122,25 @@ export const RightPanel = withStyles(styles)(class extends PureComponent<{
     }
 })
 
-export const RightPanelTop = withStyles(styles)(class extends PureComponent<{
+export const LayoutHeaderLeft = withStyles(styles)(class extends PureComponent<{
     classes: Classes
 }>{
     render() {
         const { classes } = this.props
         return (
-            <Box className={classes.rightPanelTop}>
+            <Box className={classes.headerLeft}>
+                {this.props.children}
+            </Box>
+        )
+    }
+})
+export const LayoutHeaderRight = withStyles(styles)(class extends PureComponent<{
+    classes: Classes
+}>{
+    render() {
+        const { classes } = this.props
+        return (
+            <Box className={classes.headerRight}>
                 {this.props.children}
             </Box>
         )
