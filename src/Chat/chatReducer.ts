@@ -3,13 +3,14 @@ import {Dispatch} from "redux";
 import {firestore} from "../firebase";
 import {userStateSelector} from "../User/userSelectors";
 import {History} from 'history'
+import firebase from "firebase";
 
 export type Message = {
-    id: string,
+    id?: string,
     text: string,
     userId: string,
     chatId: string,
-    createdAt: string
+    createdAt: firebase.firestore.FieldValue
 }
 
 export type ChatState = {

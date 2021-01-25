@@ -43,14 +43,14 @@ const styles = {
             "mainPartRight"
             "bottomPartRight"
         `,
-        gridTemplateRows: "1fr 80px"
+        gridTemplateRows: "1fr 90px"
     },
     rightMainPanel: {
         gridArea: "mainPartRight",
     },
     rightPanelBottom: {
         gridArea: "bottomPartRight",
-        backgroundColor: "brown"
+        backgroundColor: "#e8e6e6"
     }
 }
 

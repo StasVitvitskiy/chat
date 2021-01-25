@@ -8,10 +8,11 @@ import {Link} from 'react-router-dom'
 import {connect} from "react-redux";
 import {setSignInField, signIn, SignInState, WithSignInState} from "./signInReducer";
 import {RouteComponentProps} from "react-router";
+import {bindActionCreators} from "redux";
 
 export const SignIn = connect(
     (state:WithSignInState): SignInState => state.signIn,
-    {setSignInField, signIn} as {}
+    dispatch => bindActionCreators({setSignInField, signIn}, dispatch)
 )(class extends PureComponent<
     SignInState & {
         setSignInField: typeof setSignInField,
