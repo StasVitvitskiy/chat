@@ -34,13 +34,17 @@ export const initialChatState: ChatState = {
 export const setChatData = (data: ChatState) => ({
     type: "CHAT/SET_CHAT_DATA",
     payload: data
-})
+}) as const
+
+export const setMessages = (messages: Message[]) => ({
+    type: "CHAT/SET_MESSAGES",
+    payload: {messages}
+}) as const
 
 export const openChatById = (chatId: string) => async (dispatch: Dispatch, getState: () => unknown) => {
     const {userInfo} = userStateSelector( getState() as WithUserState)
     const chatRef = firestore.collection('chat');
     const messageRef = firestore.collection("messages");
-    const messagesSnapshot = await messageRef.where("chatId", "==", chatId).get()
     const docRef = chatRef.doc(chatId);
     const chatSnapshot = await docRef.get()
     if(chatSnapshot.exists) {
@@ -51,15 +55,21 @@ export const openChatById = (chatId: string) => async (dispatch: Dispatch, getSt
                     id: chatId,
                     user1: userInfo[chatObject.user1],
                     user2: userInfo[chatObject.user2],
-                    messages: messagesSnapshot.docs.map((el) => {
-                        return {
-                            id: el.id,
-                            ...el.data()
-                        } as Message
-                    })
+                    messages: []
                 }
             )
         )
+        messageRef.where("chatId", "==", chatId).onSnapshot(function(snapshot){
+            if (!snapshot.metadata.hasPendingWrites) {
+                const messages = snapshot.docs.map((el) => {
+                    return {
+                        id: el.id,
+                        ...el.data()
+                    } as Message
+                })
+                dispatch(setMessages(messages));
+            }
+        })
     }
 }
 
@@ -110,13 +120,19 @@ export const openChat = (userId: string, history: History) => async (dispatch: D
 
 export function chatReducer(
     state: ChatState = initialChatState,
-    action: ReturnType<typeof setChatData>
+    action: ReturnType<typeof setChatData | typeof setMessages>
 ): ChatState {
     switch(action.type) {
         case "CHAT/SET_CHAT_DATA": {
             return {
                 ...state,
                 ...action.payload
+            }
+        }
+        case "CHAT/SET_MESSAGES": {
+            return {
+                ...state,
+                messages: action.payload.messages
             }
         }
         default: {
