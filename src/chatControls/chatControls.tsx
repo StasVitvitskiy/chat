@@ -32,6 +32,14 @@ export const ChatControls = connect(
             setChatControlsData: typeof setChatControlsData,
             sendMessage: typeof sendMessage
         } & { classes: { [className in keyof typeof styles]: string } }> {
+            handleKeyPress = (e: React.KeyboardEvent) => {
+                if(e.key === "Enter") {
+                    if(!e.shiftKey) {
+                        e.preventDefault()
+                        this.props.sendMessage();
+                    }
+                }
+            }
             onChange = (e: ChangeEvent<HTMLInputElement>) => {
                 this.props.setChatControlsData({userText: e.target.value})
             }
@@ -44,6 +52,7 @@ export const ChatControls = connect(
                 return (
                     <Box padding='10px' boxSizing='border-box' component='form' display='flex' onSubmit={this.handleSubmit}>
                         <InputBase
+                            onKeyPress={this.handleKeyPress}
                             classes={classes}
                             multiline
                             rows={3}

@@ -10,7 +10,7 @@ export type Message = {
     text: string,
     userId: string,
     chatId: string,
-    createdAt: firebase.firestore.FieldValue
+    createdAt: firebase.firestore.Timestamp
 }
 
 export type ChatState = {
@@ -66,6 +66,8 @@ export const openChatById = (chatId: string) => async (dispatch: Dispatch, getSt
                         id: el.id,
                         ...el.data()
                     } as Message
+                }).sort((a,b) => {
+                    return +a.createdAt.toDate() - +b.createdAt.toDate();
                 })
                 dispatch(setMessages(messages));
             }
@@ -78,10 +80,13 @@ export const openChat = (userId: string, history: History) => async (dispatch: D
     const chatRef = firestore.collection('chat');
     const messageRef = firestore.collection("messages");
     if (currentUser) {
-        const chats = await chatRef.where("user1","in", [userId, currentUser.uid] )
+        const chats = await chatRef
             .get().then(snapshot => {
                 return snapshot.docs.map(doc => ({...doc.data(), id: doc.id} as { user1: string, user2: string, id: string }))
-                    .filter(doc => doc.user2 === userId || doc.user2 === currentUser.uid)
+                    .filter(doc => {
+                        const userIds = [doc.user2, doc.user1]
+                        return userIds.includes(currentUser.uid) && userIds.includes(userId)
+                    })
             })
         if(!chats.length) {
             const docRef = await chatRef.add({

@@ -19,6 +19,7 @@ const styles = {
             "upperPartLeft"
             "lowerPartLeft"
         `,
+        maxHeight: "calc(100vh - 50px)",
         gridTemplateRows: "80px 1fr"
     },
     headerLeft: {
@@ -43,10 +44,13 @@ const styles = {
             "mainPartRight"
             "bottomPartRight"
         `,
+        maxHeight: "calc(100vh - 50px)",
         gridTemplateRows: "1fr 90px"
     },
     rightMainPanel: {
         gridArea: "mainPartRight",
+        maxHeight:"100%",
+        overflow: "scroll",
     },
     rightPanelBottom: {
         gridArea: "bottomPartRight",

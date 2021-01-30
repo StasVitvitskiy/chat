@@ -15,6 +15,7 @@
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
     "@types/react-redux": "^7.1.14",
+    "date-fns": "^2.16.1",
     "firebase": "^8.1.1",
     "i": "^0.3.6",
     "node-sass": "^5.0.0",
