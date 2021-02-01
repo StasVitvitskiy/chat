@@ -24,11 +24,11 @@ const styles = {
     },
     headerLeft: {
         gridArea: "headerLeft",
-        backgroundColor: "blue"
+        backgroundColor: "#4A7799"
     },
     headerRight: {
         gridArea: "headerRight",
-        backgroundColor: "cyan"
+        backgroundColor: "#4A7799"
     },
     leftPanelTop: {
         gridArea: "upperPartLeft",

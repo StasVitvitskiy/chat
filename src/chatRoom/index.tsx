@@ -14,6 +14,7 @@ import {ChatMessages, openChatById} from "../Chat";
 import { useParams } from 'react-router-dom';
 import {useDispatch} from "react-redux";
 import {ChatControls} from "../chatControls";
+import {ChatHeader} from "../Chat/chatHeader";
 
 export function ChatRoom() {
     const dispatch = useDispatch()
@@ -28,7 +29,9 @@ export function ChatRoom() {
         <main>
             <Layout>
                 <LayoutHeaderLeft />
-                <LayoutHeaderRight />
+                <LayoutHeaderRight>
+                    <ChatHeader />
+                </LayoutHeaderRight>
                 <LeftPanel>
                     <LeftPanelTop>
                         <SearchUsers />

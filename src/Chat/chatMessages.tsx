@@ -7,9 +7,9 @@ import firebase from "firebase";
 import {ChatMessage} from "./chatMessage";
 
 export const ChatMessages = connect(
-    (state) => ({
-        ...(state as WithChatState).chat,
-        currentUser: (state as WithUserState).user.currentUser
+    (state: WithChatState & WithUserState) => ({
+        ...state.chat,
+        currentUser: state.user.currentUser
     })
 )(
     class extends PureComponent<ChatState & {currentUser: firebase.User | null | undefined}> {
@@ -37,12 +37,7 @@ export const ChatMessages = connect(
 
         render() {
             const isChatOpen = Boolean(this.props.id);
-            const {user1,user2, currentUser} = this.props
-            if(user1 && user2 && currentUser) {
-                if(currentUser.uid !== user1.uid) {
-
-                }
-            }
+            const {currentUser} = this.props
             return(
                 <Box
                     // @ts-ignore

@@ -41,6 +41,8 @@ export const setMessages = (messages: Message[]) => ({
     payload: {messages}
 }) as const
 
+let unsubcribeFromMessagesUpdates = () => {} // noop
+
 export const openChatById = (chatId: string) => async (dispatch: Dispatch, getState: () => unknown) => {
     const {userInfo} = userStateSelector( getState() as WithUserState)
     const chatRef = firestore.collection('chat');
@@ -59,19 +61,22 @@ export const openChatById = (chatId: string) => async (dispatch: Dispatch, getSt
                 }
             )
         )
-        messageRef.where("chatId", "==", chatId).onSnapshot(function(snapshot){
-            if (!snapshot.metadata.hasPendingWrites) {
-                const messages = snapshot.docs.map((el) => {
-                    return {
-                        id: el.id,
-                        ...el.data()
-                    } as Message
-                }).sort((a,b) => {
-                    return +a.createdAt.toDate() - +b.createdAt.toDate();
-                })
-                dispatch(setMessages(messages));
+        unsubcribeFromMessagesUpdates()
+        unsubcribeFromMessagesUpdates = messageRef.where("chatId", "==", chatId).onSnapshot(
+            function(snapshot){
+                if (!snapshot.metadata.hasPendingWrites) {
+                    const messages = snapshot.docs.map((el) => {
+                        return {
+                            id: el.id,
+                            ...el.data()
+                        } as Message
+                    }).sort((a,b) => {
+                        return +a.createdAt.toDate() - +b.createdAt.toDate();
+                    })
+                    dispatch(setMessages(messages));
+                }
             }
-        })
+        )
     }
 }
 
@@ -104,20 +109,30 @@ export const openChat = (userId: string, history: History) => async (dispatch: D
             history.push(`/chat/${chatRef.id}`)
         } else {
             const {user1, user2, id} = chats[0];
-            const messagesSnapshot = await messageRef.where("chatId", "==", id).get()
             dispatch(setChatData(
                 {
                     id: id,
                     user1: userInfo[user1],
                     user2: userInfo[user2],
-                    messages: messagesSnapshot.docs.map((el) => {
-                        return {
-                            id: el.id,
-                            ...el.data()
-                        } as Message
-                    })
+                    messages: []
                 }
             ))
+            unsubcribeFromMessagesUpdates()
+            unsubcribeFromMessagesUpdates = messageRef.where("chatId", "==", id).onSnapshot(
+                function(snapshot){
+                    if (!snapshot.metadata.hasPendingWrites) {
+                        const messages = snapshot.docs.map((el) => {
+                            return {
+                                id: el.id,
+                                ...el.data()
+                            } as Message
+                        }).sort((a,b) => {
+                            return +a.createdAt.toDate() - +b.createdAt.toDate();
+                        })
+                        dispatch(setMessages(messages));
+                    }
+                }
+            )
             history.push(`/chat/${id}`)
         }
     }
