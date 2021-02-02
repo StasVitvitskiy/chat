@@ -8,13 +8,13 @@ import {
     RightPanelBottom,
     RightPanelMain,
 } from "../layout";
-import {SignOut} from "../SignOut";
 import {SearchUsers} from "../User";
 import {ChatMessages, openChatById} from "../Chat";
 import { useParams } from 'react-router-dom';
 import {useDispatch} from "react-redux";
 import {ChatControls} from "../chatControls";
 import {ChatHeader} from "../Chat/chatHeader";
+import {UserHeader} from "../User/userHeader";
 
 export function ChatRoom() {
     const dispatch = useDispatch()
@@ -28,7 +28,9 @@ export function ChatRoom() {
     return (
         <main>
             <Layout>
-                <LayoutHeaderLeft />
+                <LayoutHeaderLeft>
+                    <UserHeader />
+                </LayoutHeaderLeft>
                 <LayoutHeaderRight>
                     <ChatHeader />
                 </LayoutHeaderRight>
@@ -37,7 +39,7 @@ export function ChatRoom() {
                         <SearchUsers />
                     </LeftPanelTop>
                     <LeftPanelBottom>
-                        <SignOut />
+
                     </LeftPanelBottom>
                 </LeftPanel>
                 <RightPanel>

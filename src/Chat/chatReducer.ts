@@ -4,6 +4,7 @@ import {firestore} from "../firebase";
 import {userStateSelector} from "../User/userSelectors";
 import {History} from 'history'
 import firebase from "firebase";
+import {clearStateOnSignOut} from "../appActions";
 
 export type Message = {
     id?: string,
@@ -140,7 +141,7 @@ export const openChat = (userId: string, history: History) => async (dispatch: D
 
 export function chatReducer(
     state: ChatState = initialChatState,
-    action: ReturnType<typeof setChatData | typeof setMessages>
+    action: ReturnType<typeof setChatData | typeof setMessages | typeof clearStateOnSignOut>
 ): ChatState {
     switch(action.type) {
         case "CHAT/SET_CHAT_DATA": {
@@ -154,6 +155,9 @@ export function chatReducer(
                 ...state,
                 messages: action.payload.messages
             }
+        }
+        case "APP_ACTIONS/CLEAR_STATE_ON_SIGN_OUT": {
+            return initialChatState
         }
         default: {
             return state

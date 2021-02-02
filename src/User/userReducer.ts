@@ -1,7 +1,7 @@
 import firebase from "firebase";
-import {Action, Dispatch} from "redux";
+import { noop } from "lodash";
+import {Dispatch} from "redux";
 import {firestore} from "../firebase";
-import {strict} from "assert";
 
 export type UserInfo = {
     name: string,
@@ -79,16 +79,17 @@ export const setUserOnlineStatus = (uid: string, status: 'online' | 'offline') =
         status
     })
 }
+let unsubscribeFromUserOnlineStatus = noop
 export const subscribeToUserOnlineStatus = () => async(dispatch: Dispatch) => {
     const userStatusCollectionRef = firestore.collection('userStatus');
-    userStatusCollectionRef.onSnapshot((snapshot) => {
+    unsubscribeFromUserOnlineStatus()
+    unsubscribeFromUserOnlineStatus = userStatusCollectionRef.onSnapshot((snapshot) => {
         const statuses = snapshot.docs.map((el) => {
             return {
                 uid: el.id,
                 ...el.data()
             } as UserStatus
         })
-        console.log(statuses)
         const userStatus = statuses.reduce((acc,cur) => {
             acc[cur.uid] = cur.status
             return acc;
@@ -96,8 +97,11 @@ export const subscribeToUserOnlineStatus = () => async(dispatch: Dispatch) => {
         dispatch(setUserStatus(userStatus));
     })
 }
+let handleVisibilityChange = () => {}
+let handlePageClose = () => {}
 export const subscribeToVisibilityChange = (uid: string) => async (dispatch: Function) => {
-    document.addEventListener("visibilitychange", () => {
+    document.removeEventListener("visibilitychange", handleVisibilityChange)
+    handleVisibilityChange = () => {
         if(document.hidden) {
             dispatch(
                 setUserOnlineStatus(uid, "offline")
@@ -107,12 +111,16 @@ export const subscribeToVisibilityChange = (uid: string) => async (dispatch: Fun
                 setUserOnlineStatus(uid, 'online')
             )
         }
-    })
-    window.addEventListener("beforeunload", () => {
+    }
+
+    window.removeEventListener("beforeunload",handlePageClose)
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    handlePageClose = () => {
         dispatch(
             setUserOnlineStatus(uid, 'offline')
         );
-    })
+    }
+    window.addEventListener("beforeunload",handlePageClose)
 }
 export const setUserStatus = (userStatus: UserStatus) => ({
     type: "USER/SET_USER_STATUS",

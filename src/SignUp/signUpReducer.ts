@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {auth} from "../firebase";
-import {History} from "history"
+import {clearStateOnSignOut} from "../appActions";
 
 export type SignUpState = {
     email: string
@@ -34,7 +34,6 @@ export const signUp = (
     email: string,
     password: string,
     confirmPassword: string,
-    history: History
 ) => async (dispatch: Dispatch) => {
     if(password !== confirmPassword) {
         return dispatch(setSignUpField("error", "Passwords do not match!"))
@@ -44,7 +43,6 @@ export const signUp = (
         dispatch(setSignUpField("loading", true))
         await auth.createUserWithEmailAndPassword(email,password)
         dispatch(setSignUpField("loading", false))
-        history.push('/personal-info');
     } catch(error) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -59,7 +57,7 @@ export const signUp = (
 
 export function signUpReducer(
     state: SignUpState = initialSignUpState,
-    action: ReturnType<typeof setSignUpField>
+    action: ReturnType<typeof setSignUpField | typeof clearStateOnSignOut>
 ): SignUpState {
     switch (action.type) {
         case "SIGN_UP/SET_FIELD": {
@@ -68,6 +66,9 @@ export function signUpReducer(
                 ...state,
                 [field]: value
             }
+        }
+        case "APP_ACTIONS/CLEAR_STATE_ON_SIGN_OUT": {
+            return initialSignUpState
         }
         default:
             return state

@@ -7,7 +7,6 @@ import Alert from '@material-ui/lab/Alert';
 import {Link} from 'react-router-dom'
 import {connect} from "react-redux";
 import {setSignInField, signIn, SignInState, WithSignInState} from "./signInReducer";
-import {RouteComponentProps} from "react-router";
 import {bindActionCreators} from "redux";
 
 export const SignIn = connect(
@@ -17,20 +16,18 @@ export const SignIn = connect(
     SignInState & {
         setSignInField: typeof setSignInField,
         signIn: typeof signIn
-    } & RouteComponentProps
+    }
 > {
   signInWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     await auth.signInWithPopup(provider);
-    this.props.history.push('/');
   }
   handleSubmit = (e: SyntheticEvent) => {
-    const {email, password, history} = this.props
+    const {email, password} = this.props
     e.preventDefault();
     this.props.signIn(
         email,
         password,
-        history
     )
   }
   updateField = (field: keyof SignInState) => (e: ChangeEvent<HTMLInputElement>) => {

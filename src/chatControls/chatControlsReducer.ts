@@ -6,6 +6,7 @@ import {userStateSelector} from "../User/userSelectors";
 import {WithUserState} from "../User";
 import {chatStateSelector} from "../Chat/chatSelector";
 import {Message, WithChatState} from "../Chat";
+import {clearStateOnSignOut} from "../appActions";
 
 
 export type ChatControlsState = {
@@ -47,7 +48,7 @@ export const sendMessage = () => async (dispatch: Dispatch, getState: () => unkn
 
 export function chatControlsReducer(
     state: ChatControlsState = initialChatControlsState,
-    action: ReturnType<typeof setChatControlsData>
+    action: ReturnType<typeof setChatControlsData | typeof clearStateOnSignOut>
 ): ChatControlsState {
     switch(action.type) {
         case "CHAT_CONTROLS/SET_CHAT_CONTROLS_DATA": {
@@ -55,6 +56,9 @@ export function chatControlsReducer(
                     ...state,
                     ...action.payload
                 }
+        }
+        case "APP_ACTIONS/CLEAR_STATE_ON_SIGN_OUT": {
+            return initialChatControlsState
         }
         default: {
             return state

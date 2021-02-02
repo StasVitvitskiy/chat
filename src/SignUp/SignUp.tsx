@@ -2,7 +2,7 @@ import React, {ChangeEvent, SyntheticEvent, useCallback} from "react";
 import {Box, Button, CardContent} from "@material-ui/core";
 import Alert from '@material-ui/lab/Alert';
 import {Card, TextField} from "@material-ui/core";
-import {Link, useHistory} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {signUpStateSelector} from "./signUpSelectors";
 import {setSignUpField, signUp, SignUpState} from "./signUpReducer";
@@ -18,7 +18,6 @@ export function SignUp() {
       },
       [dispatch]
   )
-  const history = useHistory();
 
   const handleSubmit = useCallback(
       (e: SyntheticEvent) => {
@@ -29,11 +28,10 @@ export function SignUp() {
                   email,
                   password,
                   confirmPassword,
-                  history
               )
           )
       },
-      [confirmPassword, dispatch, email, history, password]
+      [confirmPassword, dispatch, email, password]
   )
 
   return(

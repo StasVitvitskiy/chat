@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {AuthProvider} from "./authContext";
-import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
+import {Router, Switch, Route, Redirect} from 'react-router'
 import {SignIn} from './SignIn'
 import {ChatRoom} from './chatRoom'
 import {Box} from '@material-ui/core'
@@ -10,6 +10,7 @@ import {Provider} from "react-redux";
 import {store} from "./store";
 import {AuthenticatedUser, NonAuthenticatedUser} from "./User";
 import {PersonalInfo} from "./personalInfo";
+import { history } from "./history"
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         <div className="App">
             <AuthProvider>
                 <section>
-                        <Router>
+                        <Router history={history}>
                             <AuthenticatedUser>
                                 <Switch>
                                     <Route exact path='/'>
@@ -28,6 +29,15 @@ function App() {
                                     </Route>
                                     <Route exact path='/personal-info'>
                                         <PersonalInfo />
+                                    </Route>
+                                    <Route exact path='/sign-in'>
+                                        <Redirect to='/' />
+                                    </Route>
+                                    <Route exact path='/sign-up'>
+                                        <Redirect to='/personal-info' />
+                                    </Route>
+                                    <Route>
+                                        <Redirect to='/' />
                                     </Route>
                                 </Switch>
                             </AuthenticatedUser>
