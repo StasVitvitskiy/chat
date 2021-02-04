@@ -15,6 +15,7 @@ import {useDispatch} from "react-redux";
 import {ChatControls} from "../chatControls";
 import {ChatHeader} from "../Chat/chatHeader";
 import {UserHeader} from "../User/userHeader";
+import {ChatsList} from "../ChatsList";
 
 export function ChatRoom() {
     const dispatch = useDispatch()
@@ -39,7 +40,7 @@ export function ChatRoom() {
                         <SearchUsers />
                     </LeftPanelTop>
                     <LeftPanelBottom>
-
+                        <ChatsList />
                     </LeftPanelBottom>
                 </LeftPanel>
                 <RightPanel>

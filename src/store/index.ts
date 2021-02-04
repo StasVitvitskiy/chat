@@ -7,6 +7,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import {personalInfoReducer} from "../personalInfo";
 import {chatReducer} from '../Chat'
 import {chatControlsReducer} from "../chatControls/chatControlsReducer";
+import {chatsListReducer} from "../ChatsList";
 
 export type AppState = {
     signUp: ReturnType<typeof signUpReducer>
@@ -15,6 +16,7 @@ export type AppState = {
     personalInfo: ReturnType<typeof personalInfoReducer>
     chat: ReturnType<typeof chatReducer>
     chatControls: ReturnType<typeof chatControlsReducer>
+    chatsList: ReturnType<typeof chatsListReducer>
 }
 export const store = createStore(
     combineReducers({
@@ -23,7 +25,8 @@ export const store = createStore(
         user: userReducer,
         personalInfo: personalInfoReducer,
         chat: chatReducer,
-        chatControls: chatControlsReducer
+        chatControls: chatControlsReducer,
+        chatsList: chatsListReducer
     }),
     composeWithDevTools(
         applyMiddleware(thunk)

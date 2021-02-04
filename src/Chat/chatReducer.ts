@@ -5,6 +5,7 @@ import {userStateSelector} from "../User/userSelectors";
 import {History} from 'history'
 import firebase from "firebase";
 import {clearStateOnSignOut} from "../appActions";
+import {history} from '../history'
 
 export type Message = {
     id?: string,
@@ -12,6 +13,11 @@ export type Message = {
     userId: string,
     chatId: string,
     createdAt: firebase.firestore.Timestamp
+}
+export type Chat = {
+    id: string,
+    user1: string,
+    user2: string
 }
 
 export type ChatState = {
@@ -44,7 +50,7 @@ export const setMessages = (messages: Message[]) => ({
 
 let unsubcribeFromMessagesUpdates = () => {} // noop
 
-export const openChatById = (chatId: string) => async (dispatch: Dispatch, getState: () => unknown) => {
+export const openChatById = (chatId: string, redirect: boolean = false) => async (dispatch: Dispatch, getState: () => unknown) => {
     const {userInfo} = userStateSelector( getState() as WithUserState)
     const chatRef = firestore.collection('chat');
     const messageRef = firestore.collection("messages");
@@ -62,6 +68,9 @@ export const openChatById = (chatId: string) => async (dispatch: Dispatch, getSt
                 }
             )
         )
+        if(redirect) {
+            history.push(`/chat/${chatId}`)
+        }
         unsubcribeFromMessagesUpdates()
         unsubcribeFromMessagesUpdates = messageRef.where("chatId", "==", chatId).onSnapshot(
             function(snapshot){

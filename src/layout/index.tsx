@@ -20,7 +20,8 @@ const styles = {
             "lowerPartLeft"
         `,
         maxHeight: "calc(100vh - 50px)",
-        gridTemplateRows: "80px 1fr"
+        gridTemplateRows: "80px 1fr",
+        borderRight: "1px solid #e8e6e6"
     },
     headerLeft: {
         gridArea: "headerLeft",
@@ -35,7 +36,6 @@ const styles = {
     },
     leftPanelBottom: {
         gridArea: "lowerPartLeft",
-        backgroundColor: 'black'
     },
     rightPanel: {
         gridArea: "rightPanel",
