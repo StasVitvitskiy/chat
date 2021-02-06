@@ -63,9 +63,8 @@ export const ChatsList = connect(
                     <List className={classes.root}>
                         {chatsArray.map((elem) => {
                             return (
-                                <>
+                                <React.Fragment key={elem.id}>
                                     <ListItem
-                                        key={elem.id}
                                         style={{
                                             cursor: "pointer",
                                             backgroundColor: openedChatId === elem.id? "#6490B1" : "inherit",
@@ -101,7 +100,7 @@ export const ChatsList = connect(
                                         />
                                     </ListItem>
                                     <Divider variant="inset" component="li" />
-                                </>
+                                </React.Fragment>
                             )
                         })}
                     </List>
