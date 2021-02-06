@@ -5,7 +5,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
-import {withStyles} from "@material-ui/core";
+import {Box, withStyles} from "@material-ui/core";
 import {connect} from "react-redux";
 import {ChatsListState, loadChats, WithChatsListState} from './chatsListReducer';
 import {bindActionCreators} from "redux";
@@ -80,7 +80,10 @@ export const ChatsList = connect(
                                             secondaryTypographyProps={{
                                                 color: "inherit",
                                                 style: {
-                                                    fontSize: "0.8em"
+                                                    fontSize: "0.8em",
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center"
                                                 }
                                             }}
                                             secondary={
@@ -94,7 +97,23 @@ export const ChatsList = connect(
                                                     >
                                                         You:&nbsp;
                                                     </Typography>)}
-                                                    {(elem.lastMessage || {}).text}
+                                                        <span>
+                                                        {(elem.lastMessage || {}).text}
+                                                    </span>
+                                                    {Boolean(elem.unreadMsgCount) && (
+                                                        <Box
+                                                            component='span'
+                                                            bgcolor='#64C26F'
+                                                            display='flex'
+                                                            justifyContent="center"
+                                                            alignItems='center'
+                                                            padding='1px 5px'
+                                                            borderRadius="50%"
+                                                            color="white"
+                                                        >
+                                                            {(elem.unreadMsgCount)}
+                                                        </Box>
+                                                    )}
                                                 </React.Fragment>
                                             }
                                         />

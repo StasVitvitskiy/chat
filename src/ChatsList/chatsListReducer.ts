@@ -12,7 +12,8 @@ export type ChatsListState = {
         user1: string,
         user2: string,
         id: string,
-        lastMessage?: Message
+        lastMessage?: Message,
+        unreadMsgCount: number
     }[],
 }
 
@@ -70,7 +71,10 @@ export const onChatUpdate = async (
                                     return +a.createdAt.toDate() - +b.createdAt.toDate()
                                 }
                                 return 0
-                            }).pop()
+                            }).slice(-1)[0],
+                        unreadMsgCount: (groupedByChatId[elem.id] || []).filter((elem) => {
+                            return elem.status !== 'read' && elem.userId !== currentUser?.uid
+                        }).length
                     }))
 
                 dispatch(setChatsListData({chatsArray: chatsWithLastMessage}))

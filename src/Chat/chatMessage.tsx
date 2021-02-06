@@ -20,7 +20,7 @@ export class ChatMessage extends PureComponent<{isMyMessage: boolean, message: M
                         textAlign='right'
                         color='lightgrey'
                         fontSize='0.8rem'
-                    >{format(createdAt.toDate(), 'EEE H:mm:ss')}
+                    >{createdAt? format(createdAt.toDate(), 'EEE H:mm:ss'): ''}
                     </Box>
                 </Box>
             </Box>

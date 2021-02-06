@@ -29,14 +29,15 @@ export const setChatControlsData = (chatControlsData: ChatControlsState) => ({
 export const sendMessage = () => async (dispatch: Dispatch, getState: () => unknown) => {
     const {userText} = chatControlsStateSelector(getState() as WithChatControlsState);
     const {currentUser} = userStateSelector(getState() as WithUserState)
-    const {id} = chatStateSelector(getState() as WithChatState);
+    const {id, user1, user2} = chatStateSelector(getState() as WithChatState);
     const messageRef = firestore.collection("messages");
     if(currentUser) {
         await messageRef.add({
             text: userText,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             userId: currentUser.uid,
-            chatId: id
+            chatId: id,
+            status: user1?.uid === user2?.uid ? "read" : "unread"
         } as Message)
     }
     dispatch(setChatControlsData(
