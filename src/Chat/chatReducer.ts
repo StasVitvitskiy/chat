@@ -12,8 +12,10 @@ export type Message = {
     text: string,
     userId: string,
     chatId: string,
-    createdAt: firebase.firestore.Timestamp
+    createdAt: firebase.firestore.Timestamp,
+    status: MessageStatus
 }
+export type MessageStatus = "unread" | "read"
 export type Chat = {
     id: string,
     user1: string,
@@ -50,43 +52,57 @@ export const setMessages = (messages: Message[]) => ({
 
 let unsubcribeFromMessagesUpdates = () => {} // noop
 
-export const openChatById = (chatId: string, redirect: boolean = false) => async (dispatch: Dispatch, getState: () => unknown) => {
-    const {userInfo} = userStateSelector( getState() as WithUserState)
-    const chatRef = firestore.collection('chat');
-    const messageRef = firestore.collection("messages");
-    const docRef = chatRef.doc(chatId);
-    const chatSnapshot = await docRef.get()
-    if(chatSnapshot.exists) {
-        const chatObject =  chatSnapshot.data() as {user1: string, user2: string}
-        dispatch(
-            setChatData(
-                {
-                    id: chatId,
-                    user1: userInfo[chatObject.user1],
-                    user2: userInfo[chatObject.user2],
-                    messages: []
+export const markAllChatMessagesAsRead = async (chatId: string) => {
+    const messagesRef = firestore.collection('messages');
+    const messagesSnapshot = await messagesRef.where("chatId", "==", chatId).get();
+    messagesSnapshot.forEach((elem) => {
+        if(elem.data().status !== 'read') {
+            messagesRef.doc(elem.id).update({
+                status: "read"
+            })
+        }
+    })
+}
+
+export const openChatById = (chatId: string, redirect: boolean = false) =>
+    async (dispatch: Dispatch, getState: () => unknown) => {
+        const {userInfo} = userStateSelector( getState() as WithUserState)
+        const chatRef = firestore.collection('chat');
+        const messageRef = firestore.collection("messages");
+        const docRef = chatRef.doc(chatId);
+        const chatSnapshot = await docRef.get()
+        if(chatSnapshot.exists) {
+            const chatObject =  chatSnapshot.data() as {user1: string, user2: string}
+            dispatch(
+                setChatData(
+                    {
+                        id: chatId,
+                        user1: userInfo[chatObject.user1],
+                        user2: userInfo[chatObject.user2],
+                        messages: []
+                    }
+                )
+            )
+            markAllChatMessagesAsRead(chatId)
+            if(redirect) {
+                history.push(`/chat/${chatId}`)
+            }
+            unsubcribeFromMessagesUpdates()
+            unsubcribeFromMessagesUpdates = messageRef.where("chatId", "==", chatId).onSnapshot(
+                function(snapshot){
+                    if (!snapshot.metadata.hasPendingWrites) {
+                        const messages = snapshot.docs.map((el) => {
+                            return {
+                                id: el.id,
+                                ...el.data()
+                            } as Message
+                        }).sort((a,b) => {
+                            return +a.createdAt.toDate() - +b.createdAt.toDate();
+                        })
+                        dispatch(setMessages(messages));
+                    }
                 }
             )
-        )
-        if(redirect) {
-            history.push(`/chat/${chatId}`)
-        }
-        unsubcribeFromMessagesUpdates()
-        unsubcribeFromMessagesUpdates = messageRef.where("chatId", "==", chatId).onSnapshot(
-            function(snapshot){
-                if (!snapshot.metadata.hasPendingWrites) {
-                    const messages = snapshot.docs.map((el) => {
-                        return {
-                            id: el.id,
-                            ...el.data()
-                        } as Message
-                    }).sort((a,b) => {
-                        return +a.createdAt.toDate() - +b.createdAt.toDate();
-                    })
-                    dispatch(setMessages(messages));
-                }
-            }
-        )
     }
 }
 
@@ -143,6 +159,7 @@ export const openChat = (userId: string, history: History) => async (dispatch: D
                     }
                 }
             )
+            markAllChatMessagesAsRead(id)
             history.push(`/chat/${id}`)
         }
     }

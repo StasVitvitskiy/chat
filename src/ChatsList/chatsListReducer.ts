@@ -6,7 +6,6 @@ import {firestore} from "../firebase";
 import groupBy from 'lodash/groupBy'
 import {clearStateOnSignOut} from "../appActions";
 import {noop, uniqBy } from "lodash";
-import firebase from "firebase";
 
 export type ChatsListState = {
     chatsArray: {
