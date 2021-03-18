@@ -1,6 +1,6 @@
 import React, {PureComponent} from "react";
 import {Box} from "@material-ui/core";
-import {setUserOnlineStatus, UserState, WithUserState} from "./userReducer";
+import {UserState, WithUserState} from "./userReducer";
 import {connect} from "react-redux";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Menu from '@material-ui/core/Menu';
@@ -12,12 +12,10 @@ import {clearStateOnSignOut} from "../appActions";
 export const UserHeader = connect(
     (state: WithUserState): UserState => state.user,
     (dispatch: Dispatch) => bindActionCreators({
-        setUserOnlineStatus,
         clearStateOnSignOut
     }, dispatch)
 )(
     class extends PureComponent<UserState & {
-        setUserOnlineStatus: typeof setUserOnlineStatus,
         clearStateOnSignOut: typeof clearStateOnSignOut
     }
     > {
@@ -34,8 +32,6 @@ export const UserHeader = connect(
         }
         signOut = async () => {
            await auth.signOut()
-            const {currentUser} = this.props
-            this.props.setUserOnlineStatus(String(currentUser?.uid), 'offline');
            this.props.clearStateOnSignOut()
         }
         state: {

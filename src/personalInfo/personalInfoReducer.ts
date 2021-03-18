@@ -1,7 +1,6 @@
 import {History} from "history";
 import {auth, firestore} from "../firebase";
 import firebase from "firebase";
-import {getUsers} from "../User";
 
 
 export type PersonalInfoState = {
@@ -51,9 +50,6 @@ export const sendPersonalInfo = (formNameValue: string, formLastNameValue: strin
                 })
             }
             dispatch(clearPersonalInfo())
-            dispatch(
-                getUsers()
-            )
             history.push('/');
         }
     }

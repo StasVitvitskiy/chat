@@ -9,13 +9,14 @@ import {
     RightPanelMain,
 } from "../layout";
 import {SearchUsers} from "../User";
-import {ChatMessages, openChatById} from "../Chat";
+import {ChatMessages} from "../Chat";
 import { useParams } from 'react-router-dom';
 import {useDispatch} from "react-redux";
 import {ChatControls} from "../chatControls";
 import {ChatHeader} from "../Chat/chatHeader";
 import {UserHeader} from "../User/userHeader";
 import {ChatsList} from "../ChatsList";
+import { openChatById } from '../api';
 
 export function ChatRoom() {
     const dispatch = useDispatch()

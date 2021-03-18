@@ -45,12 +45,12 @@ const styles = {
             "bottomPartRight"
         `,
         maxHeight: "calc(100vh - 50px)",
-        gridTemplateRows: "1fr 90px"
+        gridTemplateRows: "1fr auto"
     },
     rightMainPanel: {
         gridArea: "mainPartRight",
         maxHeight:"100%",
-        overflow: "scroll",
+        overflow: "auto",
     },
     rightPanelBottom: {
         gridArea: "bottomPartRight",

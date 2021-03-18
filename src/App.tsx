@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {AuthProvider} from "./authContext";
 import {Router, Switch, Route, Redirect} from 'react-router'
 import {SignIn} from './SignIn'
@@ -12,7 +11,7 @@ import {AuthenticatedUser, NonAuthenticatedUser} from "./User";
 import {PersonalInfo} from "./personalInfo";
 import { history } from "./history"
 
-function App() {
+export function App() {
   return (
     <Provider store={store}>
         <div className="App">
@@ -59,5 +58,3 @@ function App() {
     </Provider>
   );
 }
-
-export default App;

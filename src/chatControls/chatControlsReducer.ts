@@ -5,8 +5,9 @@ import firebase from "firebase";
 import {userStateSelector} from "../User/userSelectors";
 import {WithUserState} from "../User";
 import {chatStateSelector} from "../Chat/chatSelector";
-import {Message, WithChatState} from "../Chat";
+import {WithChatState} from "../Chat";
 import {clearStateOnSignOut} from "../appActions";
+import {Message} from "../api";
 
 
 export type ChatControlsState = {
@@ -29,15 +30,16 @@ export const setChatControlsData = (chatControlsData: ChatControlsState) => ({
 export const sendMessage = () => async (dispatch: Dispatch, getState: () => unknown) => {
     const {userText} = chatControlsStateSelector(getState() as WithChatControlsState);
     const {currentUser} = userStateSelector(getState() as WithUserState)
-    const {id, user1, user2} = chatStateSelector(getState() as WithChatState);
+    const {openChat} = chatStateSelector(getState() as WithChatState);
     const messageRef = firestore.collection("messages");
-    if(currentUser) {
+    if(currentUser && openChat) {
+        const {id, user1, user2} = openChat
         await messageRef.add({
             text: userText,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             userId: currentUser.uid,
             chatId: id,
-            status: user1?.uid === user2?.uid ? "read" : "unread"
+            status: user1 === user2 ? "read" : "unread"
         } as Message)
     }
     dispatch(setChatControlsData(

@@ -2,7 +2,8 @@ import React, {PureComponent} from "react";
 import {Box} from "@material-ui/core";
 import {ChatState, WithChatState} from "./chatReducer";
 import {connect} from "react-redux";
-import {CurrentUser, UserStatus, WithUserState} from "../User";
+import {WithUserState} from "../User";
+import { CurrentUser, UserStatus } from "../api";
 
 export const ChatHeader = connect(
     (state: WithChatState & WithUserState) => ({
@@ -13,7 +14,9 @@ export const ChatHeader = connect(
 )(
     class extends PureComponent<ChatState & {currentUser: CurrentUser, statuses: UserStatus}> {
         render() {
-            const {user1, user2, currentUser, statuses} = this.props
+            const {openChat, userInfo, currentUser, statuses} = this.props
+            const user1 = userInfo[openChat?.user1 || ""] || {}
+            const user2 = userInfo[openChat?.user2 || ""] || {}
             return (
                 <Box display='flex' justifyContent='flex-start' alignItems='center' paddingLeft='10px' height='100%'>
                     <Box>
