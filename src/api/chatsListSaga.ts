@@ -22,7 +22,7 @@ export const chatsListResponse = (chatsList: ChatsMap) => ({
 }) as const
 chatsListResponse.toString = (): "API/CHATS_LIST_RESPONSE" => CHATS_LIST_RESPONSE
 
-export function* subscribeToChatsList(action: ReturnType<typeof userStateChanged>) {
+export function* subscribeToChatsList(action: ReturnType<typeof userStateChanged>): unknown {
     const channel = yield call(chatsListChannel)
 
     if (action.payload) {
@@ -73,7 +73,7 @@ export const openChatByIdResponse = (chat: Chat) => ({
 }) as const
 openChatByIdResponse.toString = (): "API/OPEN_CHAT_BY_ID_RESPONSE" => OPEN_CHAT_BY_ID_RESPONSE
 
-export function* openChatByIdSaga (action: ReturnType<typeof openChatById>) {
+export function* openChatByIdSaga (action: ReturnType<typeof openChatById>): unknown {
     const {chatId, redirect} = action.payload
     const chatRef = firestore.collection('chat');
     const docRef = chatRef.doc(chatId);
@@ -105,7 +105,7 @@ export const openChatResponse = (chat: Chat) => ({
 }) as const
 openChatResponse.toString = (): "API/OPEN_CHAT_RESPONSE" => OPEN_CHAT_RESPONSE
 
-export function* openChatSaga(action: ReturnType<typeof openChat>) {
+export function* openChatSaga(action: ReturnType<typeof openChat>): unknown {
     const {userId, currentUserId} = action.payload
     const chatRef = firestore.collection('chat');
 

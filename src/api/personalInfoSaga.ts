@@ -12,7 +12,7 @@ export const personalInfoResponse = (personalInfo: UserInfoState) => ({
 }) as const
 personalInfoResponse.toString = (): "API/PERSONAL_INFO_RESPONSE" => PERSONAL_INFO_RESPONSE
 
-export function* subscribeToPersonalInfo(action: ReturnType<typeof userStateChanged>) {
+export function* subscribeToPersonalInfo(action: ReturnType<typeof userStateChanged>): unknown {
     const channel = yield call(personalInfoChannel)
     if (action.payload) {
         while (true) {

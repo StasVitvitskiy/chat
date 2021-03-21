@@ -36,7 +36,7 @@ function pageStateChannel() {
     })
 }
 
-export function* subscribeToPageStateSaga(action: ReturnType<typeof userStateChanged>) {
+export function* subscribeToPageStateSaga(action: ReturnType<typeof userStateChanged>): unknown {
     const channel = yield call(pageStateChannel)
     const {payload} = action
 

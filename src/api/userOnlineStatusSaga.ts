@@ -28,7 +28,7 @@ export const onlineStatusResponse = (data: UserStatus) => ({
 onlineStatusResponse.toString = (): "ONLINE_STATUS_RESPONSE" => ONLINE_STATUS_RESPONSE
 
 let currentUserId: string
-export function* subscribeToUserStatus(action: ReturnType<typeof userStateChanged>) {
+export function* subscribeToUserStatus(action: ReturnType<typeof userStateChanged>): unknown {
     const channel = yield call(onlineStatusChannel)
     if (action.payload) {
         currentUserId = action.payload.uid

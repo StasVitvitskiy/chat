@@ -50,7 +50,12 @@ export const UserHeader = connect(
                     alignItems='center'
                     paddingLeft='10px'
                 >
-                    <AccountCircleIcon style={{cursor: "pointer"}} onClick={this.handleClick} fontSize='large' />
+                    <AccountCircleIcon
+                        data-testid="account-icon"
+                        style={{cursor: "pointer"}}
+                        onClick={this.handleClick}
+                        fontSize='large'
+                    />
                     <Menu
                         id="simple-menu"
                         anchorEl={this.state.anchorEl}
@@ -58,7 +63,7 @@ export const UserHeader = connect(
                         open={Boolean(this.state.anchorEl)}
                         onClose={this.handleClose}
                     >
-                        <MenuItem onClick={this.signOut}>
+                        <MenuItem data-testid="sign-out" onClick={this.signOut}>
                             Sign Out
                         </MenuItem>
                     </Menu>

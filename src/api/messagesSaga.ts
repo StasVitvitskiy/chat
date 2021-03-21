@@ -26,7 +26,7 @@ export const markAllChatMessagesAsRead = (chatId: string, userId: string) => ({
 }) as const
 markAllChatMessagesAsRead.toString = (): "API/MARK_CHAT_MESSAGES_READ" => MARK_CHAT_MESSAGES_READ
 
-export function* markAllChatMessagesAsReadSaga(action: ReturnType<typeof markAllChatMessagesAsRead>) {
+export function* markAllChatMessagesAsReadSaga(action: ReturnType<typeof markAllChatMessagesAsRead>): unknown {
     const {chatId, userId} = action.payload
     const messagesRef = firestore.collection('messages');
     const messagesSnapshot = yield call(
@@ -60,7 +60,7 @@ function messagesChannel(uid: string) {
         return unsubscribeFromMessagesUpdates
     })
 }
-export function* subscribeToMessagesSaga(action: ReturnType<typeof userStateChanged>) {
+export function* subscribeToMessagesSaga(action: ReturnType<typeof userStateChanged>): unknown {
     if (action.payload) {
         const channel = yield call(messagesChannel, action.payload.uid)
 

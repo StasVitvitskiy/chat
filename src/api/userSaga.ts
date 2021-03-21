@@ -10,7 +10,7 @@ export const userStateChanged = (user: CurrentUser) => ({
 }) as const
 userStateChanged.toString = (): "API/USER_STATE_CHANGED" => USER_STATE_CHANGED
 
-export function* subscribeToUserStateChange() {
+export function* subscribeToUserStateChange(): unknown {
     const channel = yield call(userStateChannel)
     while (true) {
         const {user} = yield take(channel)

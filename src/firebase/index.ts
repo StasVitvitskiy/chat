@@ -14,3 +14,7 @@ firebase.initializeApp({
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+if (process.env.REACT_APP_USE_FIREBASE_EMULATORS === "true") {
+    firestore.useEmulator("localhost", 8080);
+    auth.useEmulator("http://localhost:9099")
+}
